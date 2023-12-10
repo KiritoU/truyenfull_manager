@@ -1,0 +1,9 @@
+__pycache__
+.vscode
+*ipynb
+venv
+
+.env
+*sqlite*
+test_*
+.DS*
