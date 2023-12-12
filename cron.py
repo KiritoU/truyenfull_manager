@@ -9,6 +9,7 @@ env = environ.Env()
 env.read_env(".env")
 
 HTTP_WS_SERVER = env.bool("HTTP_WS_SERVER", "127.0.0.1:8000")
+print(HTTP_WS_SERVER)
 
 print("Connecting to websocket...")
 ws = create_connection(f"ws://{HTTP_WS_SERVER}/ws/source/truyenfull.vn/")
