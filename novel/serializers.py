@@ -21,6 +21,27 @@ class GenreSerializer(serializers.ModelSerializer):
         return genre.get_statistics()
 
 
+class NovelDetailSerializer(serializers.ModelSerializer):
+    chapters = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Novel
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "chapters",
+        ]
+
+    def get_chapters(self, novel: Novel) -> dict:
+        chapters = novel.chapters.all()
+        crawled_chapters = chapters.filter(is_crawled=True)
+        return {
+            "all": chapters.count(),
+            "crawled": crawled_chapters.count(),
+        }
+
+
 class CrawlSourceSerializer(serializers.ModelSerializer):
     novels = serializers.SerializerMethodField()
     chapters = serializers.SerializerMethodField()

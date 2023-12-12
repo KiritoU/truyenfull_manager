@@ -41,7 +41,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 col-md-8 col-lg-9">
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -62,49 +62,24 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="form-group">
+                        <label for="logs">Logs</label>
+                        <textarea class="form-control" id="logs" rows="16" readonly></textarea>
+                    </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg-3" style="background: #EBF1F1; padding: 10px 0px">
                     <div class="container">
-                        <div style="border-bottom: 1px solid #DEE2E6; margin-bottom: 8px;">
+                        <div style="margin-bottom: 8px;">
                             <p style="font-weight: bold; margin-bottom: 4px;">THỂ LOẠI TRUYỆN
                             </p>
                         </div>
                         <div class="row" id="genres">
-                            <!-- <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div>
-                            <div class="col-6">
-                                Novel (1/2)
-                            </div> -->
+                            
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="logs">Logs</label>
-                <textarea class="form-control" id="logs" rows="16" readonly></textarea>
-            </div>
+            
         </div>
     </div>
     <script>
@@ -120,7 +95,6 @@
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data).message;
-            console.log(data);
             if (data.message) {
                 const newMessage = data.message + '\n';
                 const currentLogs = document.querySelector('#logs').value;
@@ -139,204 +113,46 @@
             if (data.chapters.all) {
                 document.getElementById('chapters-all').textContent = data.chapters.all;
             }
+            if (data.genres) {
+                renderGenres(data.genres);
+            }
         };
 
         chatSocket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        const mockData = [
-            {
-                "id": 2,
-                "name": "Tiên Hiệp",
-                "slug": "tien-hiep",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 3,
-                "name": "Dị Giới",
-                "slug": "di-gioi",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 4,
-                "name": "Kiếm Hiệp",
-                "slug": "kiem-hiep",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 5,
-                "name": "Ngôn Tình",
-                "slug": "ngon-tinh",
-                "stats": {
-                    "novels": {
-                        "all": 2,
-                        "crawled": 1
-                    },
-                    "chapters": {
-                        "all": 3703,
-                        "crawled": 572
-                    }
-                }
-            },
-            {
-                "id": 6,
-                "name": "Đô Thị",
-                "slug": "do-thi",
-                "stats": {
-                    "novels": {
-                        "all": 2,
-                        "crawled": 1
-                    },
-                    "chapters": {
-                        "all": 3703,
-                        "crawled": 572
-                    }
-                }
-            },
-            {
-                "id": 7,
-                "name": "Huyền Huyễn",
-                "slug": "huyen-huyen",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 8,
-                "name": "Xuyên Không",
-                "slug": "xuyen-khong",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 9,
-                "name": "Trọng Sinh",
-                "slug": "trong-sinh",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 10,
-                "name": "Cổ Đại",
-                "slug": "co-dai",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 11,
-                "name": "Mạt Thế",
-                "slug": "mat-the",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 12,
-                "name": "Xuyên Nhanh",
-                "slug": "xuyen-nhanh",
-                "stats": {
-                    "novels": {
-                        "all": 0,
-                        "crawled": 0
-                    },
-                    "chapters": {
-                        "all": 0,
-                        "crawled": 0
-                    }
-                }
-            },
-            {
-                "id": 13,
-                "name": "Khác",
-                "slug": "khac",
-                "stats": {
-                    "novels": {
-                        "all": 1,
-                        "crawled": 1
-                    },
-                    "chapters": {
-                        "all": 100,
-                        "crawled": 100
-                    }
-                }
-            }
-        ]
-        window.onload = () => {
+        const renderGenres = (genres) => {
             const genresDiv = document.getElementById('genres');
-            for (let i = 0; i < mockData.length; i++) {
-                const item = mockData[i]
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "col-6 genre-item";
-                itemDiv.innerHTML = `${item.name} <br/> - ${item.stats.novels.crawled}/${item.stats.novels.all}<br/> - ${item.stats.chapters.crawled}/${item.stats.chapters.all}<br/>`;
-                // itemDiv.innerHTML = `${item.name}`;
-                genresDiv.appendChild(itemDiv);
+            genresDiv.innerHTML = '';
+            const table = document.createElement('table');
+            table.className = "table table-striped table-bordered"
+            const tableHead = document.createElement('thead');
+            tableHead.innerHTML = `<tr>
+      <th scope="col">Tên</th>
+      <th scope="col">Truyện</th>
+      <th scope="col">Chương</th>
+    </tr>`
+            table.appendChild(tableHead);
+            const tableBody = document.createElement('tbody');
+
+            for (let i = 0; i < genres.length; i++) {
+                const item = genres[i];
+                const row = tableBody.insertRow(i);
+                const link = document.createElement('a'); // Create anchor tag
+                link.href = `/source/${source.name}/${item.slug}/`; // Set the href attribute
+                link.style.textDecoration = 'none'; // Optional: remove underline
+                row.insertCell(0).appendChild(link).innerHTML = item.name; // Append the link to the cell and set its content
+                row.insertCell(1).innerHTML = `${item.stats.novels.crawled} / ${item.stats.novels.all}`;
+                row.insertCell(2).innerHTML = `${item.stats.chapters.crawled} / ${item.stats.chapters.all}`;
             }
+
+            table.appendChild(tableBody);
+            genresDiv.appendChild(table);
+        }
+
+        window.onload = () => {
+            renderGenres(source.genres);
         }
     </script>
 

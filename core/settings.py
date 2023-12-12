@@ -210,17 +210,17 @@ if DEBUG:
         "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
     }
 
-if not DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": env("DB_ENGINE"),
-            "NAME": env("DB_NAME"),
-            "USER": env("DB_USERNAME"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
-        }
-    }
+# if not DEBUG:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": env("DB_ENGINE"),
+#             "NAME": env("DB_NAME"),
+#             "USER": env("DB_USERNAME"),
+#             "PASSWORD": env("DB_PASSWORD"),
+#             "HOST": env("DB_HOST"),
+#             "PORT": env("DB_PORT"),
+#         }
+#     }
 
 CORS_ALLOWED_ORIGINS = env.list("DJANGO_CORS_ALLOWED_ORIGINS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
