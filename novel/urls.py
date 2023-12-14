@@ -6,6 +6,11 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path(
+        "novelnchapterupdate/",
+        views.NovelAndChapterUpdateAPIView.as_view(),
+        name="novelnchapterupdate",
+    ),
     path("sources-info/", views.CrawlSourcesAPIView.as_view(), name="crawl_sources"),
     path("genres-info/", views.GenreAPIView.as_view(), name="genre_infos"),
     path(
