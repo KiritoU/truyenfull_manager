@@ -38,12 +38,12 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 
 INSTALLED_APPS = [
     # 3rd
+    "novel",
     "daphne",
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     # Devil
-    "novel",
     #
     "django.contrib.admin",
     "django.contrib.auth",

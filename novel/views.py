@@ -65,6 +65,8 @@ def genre_details(request, source_name, genre_slug):
 
 
 class CrawlSourcesAPIView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request, *args, **kwargs):
         sources = CrawlSource.objects.all()
 
@@ -74,6 +76,8 @@ class CrawlSourcesAPIView(views.APIView):
 
 
 class GenreAPIView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request, *args, **kwargs):
         source_name = request.query_params.get("source", "")
         genres = Genre.objects.all()
@@ -86,6 +90,8 @@ class GenreAPIView(views.APIView):
 
 
 class NovelAndChapterUpdateAPIView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request, *args, **kwargs):
         story_details = request.data.get("story_details", {})
         if story_details:
