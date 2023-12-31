@@ -11,9 +11,6 @@ env.read_env(".env")
 HTTP_WS_SERVER = env("HTTP_WS_SERVER")
 print(HTTP_WS_SERVER)
 
-print("Connecting to websocket...")
-ws = create_connection(f"ws://{HTTP_WS_SERVER}/ws/source/truyenfull.vn/")
-print("Connected to websocket...")
 
 sources_info_url = f"http://{HTTP_WS_SERVER}/source/sources-info"
 genres_info_url = f"http://{HTTP_WS_SERVER}/source/genres-info"
@@ -28,8 +25,16 @@ def main():
             genres_info = requests.get(
                 f"{genres_info_url}/?source=truyenfull.vn"
             ).json()
+
+            print("Connecting to websocket...")
+            ws = create_connection(f"ws://{HTTP_WS_SERVER}/ws/source/truyenfull.vn/")
+            print("Connected to websocket...")
+
             ws.send(json.dumps({"message": {**source, "genres": genres_info}}))
-        sleep(60)
+
+            ws.close()
+
+        sleep(10)
 
 
 def test():
