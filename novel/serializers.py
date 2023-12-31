@@ -36,10 +36,18 @@ class NovelDetailSerializer(serializers.ModelSerializer):
     def get_chapters(self, novel: Novel) -> dict:
         chapters = novel.chapters.all()
         crawled_chapters = chapters.filter(is_crawled=True)
-        return {
+        res = {
             "all": chapters.count(),
             "crawled": crawled_chapters.count(),
         }
+
+        res["status"] = (
+            "Đủ"
+            if res["all"] == res["crawled"]
+            else f'Còn {res["all"] - res["crawled"]}'
+        )
+
+        return res
 
 
 class CrawlSourceSerializer(serializers.ModelSerializer):

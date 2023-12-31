@@ -14,6 +14,7 @@
             <thead>
               <tr>
                 <th scope="col">Title</th>
+                <th scope="col">Status</th>
                 <th scope="col">Crawled chapters</th>
                 <th scope="col">All chapters</th>
               </tr>
@@ -22,6 +23,7 @@
                 {% for novel in novels %}
                     <tr>
                         <td>{{ novel.title }}</td>
+                        <td>{{ novel.chapters.status }}</td>
                         <td>{{ novel.chapters.crawled }}</td>
                         <td>{{ novel.chapters.all }}</td>
                     </tr>
