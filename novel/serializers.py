@@ -34,11 +34,9 @@ class NovelDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_chapters(self, novel: Novel) -> dict:
-        chapters = novel.chapters.all()
-        crawled_chapters = chapters.filter(is_crawled=True)
         res = {
-            "all": chapters.count(),
-            "crawled": crawled_chapters.count(),
+            "all": novel.chapter_count,
+            "crawled": novel.crawled_chapter_count,
         }
 
         res["status"] = (
@@ -65,18 +63,11 @@ class CrawlSourceSerializer(serializers.ModelSerializer):
 
     def get_novels(self, source: CrawlSource) -> dict:
         novels = source.novels.all()
-
-        crawled_novels = 0
-        for novel in novels:
-            is_not_crawled_chapter_exist = novel.chapters.filter(
-                is_crawled=False
-            ).exists()
-            if not is_not_crawled_chapter_exist:
-                crawled_novels += 1
+        crawled_novels = novels.filter(is_crawled=True)
 
         return {
             "all": novels.count(),
-            "crawled": crawled_novels,
+            "crawled": crawled_novels.count(),
         }
 
     def get_chapters(self, source: CrawlSource) -> dict:

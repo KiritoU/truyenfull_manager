@@ -1,5 +1,8 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import Http404
 from django.shortcuts import render
+from django.views.generic.list import ListView
 from rest_framework import views, status, response, permissions
 from urllib.parse import urlparse
 
@@ -7,6 +10,7 @@ from slugify import slugify
 
 from .models import CrawlSource, Novel, Genre, Chapter
 from .serializers import CrawlSourceSerializer, GenreSerializer, NovelDetailSerializer
+from .tasks import update_novel_stats
 
 
 def get_chapter_slug(chapter_name: str, story_title: str) -> str:
@@ -28,11 +32,11 @@ def source_details(request, source_name):
     except CrawlSource.DoesNotExist:
         raise Http404("Source does not exist")
 
-    genres = Genre.objects.filter(novels__from_source__name=source.name).distinct()
+    genres = Genre.objects.filter(novels__from_source=source).distinct()
 
     return render(
         request,
-        "novel/source_detail_2.html",
+        "novel/source_detail.html",
         {
             "source": {
                 **CrawlSourceSerializer(source).data,
@@ -62,6 +66,38 @@ def genre_details(request, source_name, genre_slug):
             "genre": genre_name,
         },
     )
+
+
+def novel_details(request, novel_slug):
+    try:
+        novel = Novel.objects.get(slug=novel_slug)
+    except Novel.DoesNotExist:
+        raise Http404("Novel does not exist")
+
+    chapters = novel.chapters.all()
+
+    return render(
+        request,
+        "novel/novel_detail.html",
+        {
+            "chapters": chapters,
+            "novel": novel,
+            "source": novel.from_source.name,
+        },
+    )
+
+
+class ChapterListView(ListView):
+    model = Chapter
+    paginate_by = 100  # if pagination is desired
+    template_name = "novel/novel_detail.html"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        novel_slug = self.kwargs.get("novel_slug")
+
+        queryset = Chapter.objects.filter(novel__slug=novel_slug)
+
+        return queryset
 
 
 class CrawlSourcesAPIView(views.APIView):
@@ -99,6 +135,12 @@ class NovelAndChapterUpdateAPIView(views.APIView):
             title = story_details.get("title", "")
             slug = story_details.get("slug", "")
             post_id = story_details.get("post_id", "")
+
+            update_story_stats = request.data.get("update_story_stats", False)
+
+            if update_story_stats:
+                update_novel_stats.delay(title, slug, post_id, href)
+                return response.Response({"message": "ok"})
 
             source_name = urlparse(href).netloc
             from_source, _ = CrawlSource.objects.get_or_create(name=source_name)

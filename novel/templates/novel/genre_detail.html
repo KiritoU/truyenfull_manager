@@ -22,7 +22,9 @@
             <tbody>
                 {% for novel in novels %}
                     <tr>
-                        <td>{{ novel.title }}</td>
+                        <td>
+                            <a href="/source/story/{{ novel.slug }}/">{{ novel.title }}</a>
+                        </td>
                         <td>{{ novel.chapters.status }}</td>
                         <td>{{ novel.chapters.crawled }}</td>
                         <td>{{ novel.chapters.all }}</td>

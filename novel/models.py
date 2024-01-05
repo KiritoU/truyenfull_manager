@@ -16,28 +16,19 @@ class Genre(models.Model):
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255, unique=True)
 
+    novel_count = models.IntegerField(null=True, blank=True, default=0)
+    crawled_novel_count = models.IntegerField(null=True, blank=True, default=0)
+
     def __str__(self):
         return self.name
 
     def get_statistics(self):
-        novels = self.novels.all()
         result = {
-            "novels": {"all": novels.count(), "crawled": 0},
-            "chapters": {"all": 0, "crawled": 0},
+            "novels": {
+                "all": self.novel_count,
+                "crawled": self.crawled_novel_count,
+            }
         }
-
-        for novel in novels:
-            chapters = novel.chapters.all()
-            crawled_chapters = chapters.filter(is_crawled=True)
-
-            chapters_count = chapters.count()
-            crawled_chapters_count = crawled_chapters.count()
-
-            result["chapters"]["all"] += chapters_count
-            result["chapters"]["crawled"] += crawled_chapters_count
-
-            if chapters_count == crawled_chapters_count:
-                result["novels"]["crawled"] += 1
 
         return result
 
@@ -54,6 +45,11 @@ class Novel(models.Model):
     from_source = models.ForeignKey(
         CrawlSource, related_name="novels", on_delete=models.CASCADE
     )
+
+    chapter_count = models.IntegerField(null=True, blank=True, default=0)
+    crawled_chapter_count = models.IntegerField(null=True, blank=True, default=0)
+
+    is_crawled = models.BooleanField(null=True, blank=True, default=False)
 
     genres = models.ManyToManyField(Genre, blank=True, related_name="novels")
 
