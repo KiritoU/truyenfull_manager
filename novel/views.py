@@ -64,11 +64,12 @@ def genre_details(request, source_name, genre_slug):
             "novels": NovelDetailSerializer(novels, many=True).data,
             "source": source_name,
             "genre": genre_name,
+            "genre_slug": genre_slug,
         },
     )
 
 
-def novel_details(request, novel_slug):
+def novel_details(request, source_name, genre_slug, novel_slug):
     try:
         novel = Novel.objects.get(slug=novel_slug)
     except Novel.DoesNotExist:
@@ -82,7 +83,8 @@ def novel_details(request, novel_slug):
         {
             "chapters": chapters,
             "novel": novel,
-            "source": novel.from_source.name,
+            "source": source_name,
+            "genre_slug": genre_slug,
         },
     )
 

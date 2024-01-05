@@ -23,7 +23,7 @@
                 {% for novel in novels %}
                     <tr>
                         <td>
-                            <a href="/source/story/{{ novel.slug }}/">{{ novel.title }}</a>
+                            <a href="/source/{{ source }}/{{ genre_slug }}/{{ novel.slug }}/">{{ novel.title }}</a>
                         </td>
                         <td>{{ novel.chapters.status }}</td>
                         <td>{{ novel.chapters.crawled }}</td>

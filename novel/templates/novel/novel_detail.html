@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1 class="mt-5 mb-4 text-center">{{ novel.title }}</h1>
-        <a href="/source/{{ source }}" class="btn btn-primary mb-2 px-5" role="button">Back</a>
+        <a href="/source/{{ source }}/{{ genre_slug }}" class="btn btn-primary mb-2 px-5" role="button">Back</a>
         <ul class="list-group">
         {% for chapter in chapters %}
             <li class="list-group-item">{{ chapter.name }}</li>

@@ -14,7 +14,7 @@ urlpatterns = [
     path("sources-info/", views.CrawlSourcesAPIView.as_view(), name="crawl_sources"),
     path("genres-info/", views.GenreAPIView.as_view(), name="genre_infos"),
     path(
-        "story/<str:novel_slug>/",
+        "<str:source_name>/<str:genre_slug>/<str:novel_slug>/",
         views.novel_details,
         # views.ChapterListView.as_view(),
         name="novel_details",
